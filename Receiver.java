@@ -9,9 +9,9 @@ public class Receiver extends Thread{
     InetAddress group;
     int port;
     MulticastSocket socket;
-    ConcurrentHashMap<SocketAddress, boolean> addressMap;
+    ConcurrentHashMap<SocketAddress, Boolean> addressMap;
 
-    public Receiver(InetAddress group, int port, ConcurrentHashMap<SocketAddress, boolean> addressMap) throws IOException {
+    public Receiver(InetAddress group, int port, ConcurrentHashMap<SocketAddress, Boolean> addressMap) throws IOException {
         this.group = group;
         this.port = port;
         this.addressMap = addressMap;
@@ -32,7 +32,7 @@ public class Receiver extends Thread{
                 e.printStackTrace();
             }
             addressMap.put(datagramPacket.getSocketAddress(), true);
+            System.out.println("Socket address: " + datagramPacket.getSocketAddress());
         }
-
     }
 }

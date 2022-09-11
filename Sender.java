@@ -9,16 +9,16 @@ public class Sender extends Thread{
     InetAddress group;
     int port;
     MulticastSocket socket;
-    ConcurrentHashMap<SocketAddress, boolean> addressMap;
+    ConcurrentHashMap<SocketAddress, Boolean> addressMap;
     DatagramPacket datagramPacket;
     String message = "Hi there!";
 
-    public Sender(InetAddress group, int port, ConcurrentHashMap<SocketAddress, boolean> addressMap) throws IOException {
+    public Sender(InetAddress group, int port, ConcurrentHashMap<SocketAddress, Boolean> addressMap) throws IOException {
         this.group = group;
         this.port = port;
         this.addressMap = addressMap;
 
-        socket = new MulticastSocket(port);
+        socket = new MulticastSocket();
         datagramPacket = new DatagramPacket(message.getBytes(), message.length(), group, port);
     }
 

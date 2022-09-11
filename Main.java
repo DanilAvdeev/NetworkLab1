@@ -8,7 +8,7 @@ public class Main {
         String ip = args[0];
         int port = Integer.parseInt(args[1]);
         InetAddress group;
-        ConcurrentHashMap<SocketAddress, boolean> addressMap = new ConcurrentHashMap<SocketAddress, boolean>();
+        ConcurrentHashMap<SocketAddress, Boolean> addressMap = new ConcurrentHashMap<>();
 
         try {
             group = InetAddress.getByName(ip);
