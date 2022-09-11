@@ -12,6 +12,7 @@ public class Main {
 
         try {
             group = InetAddress.getByName(ip);
+            System.out.println("group ip: " + group);
             //создание сендера
             Sender sender = new Sender(group, port, addressMap);
             sender.start();

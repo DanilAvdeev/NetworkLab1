@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.SocketAddress;
+import java.net.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Receiver extends Thread{
@@ -18,6 +15,7 @@ public class Receiver extends Thread{
 
         socket = new MulticastSocket(port);
         socket.joinGroup(group);
+        //socket.joinGroup(new InetSocketAddress(group, port), NetworkInterface.getByInetAddress(group));
     }
 
     @Override
@@ -28,11 +26,13 @@ public class Receiver extends Thread{
 
             try {
                 socket.receive(datagramPacket);
+                String receivedData = new String(datagramPacket.getData());
+                System.out.println("Received: " + receivedData);
+                addressMap.put(datagramPacket.getSocketAddress(), true);
+                System.out.println("Socket address: " + datagramPacket.getSocketAddress());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            addressMap.put(datagramPacket.getSocketAddress(), true);
-            System.out.println("Socket address: " + datagramPacket.getSocketAddress());
         }
     }
 }

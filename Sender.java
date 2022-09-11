@@ -11,7 +11,7 @@ public class Sender extends Thread{
     MulticastSocket socket;
     ConcurrentHashMap<SocketAddress, Boolean> addressMap;
     DatagramPacket datagramPacket;
-    String message = "Hi there!";
+    String message = "Hi";
 
     public Sender(InetAddress group, int port, ConcurrentHashMap<SocketAddress, Boolean> addressMap) throws IOException {
         this.group = group;
