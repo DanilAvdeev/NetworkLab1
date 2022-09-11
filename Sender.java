@@ -18,7 +18,7 @@ public class Sender {
         this.addressMap = addressMap;
 
         socket = new MulticastSocket();
-
+//
         //datagram = new DatagramPacket();
     }
 
