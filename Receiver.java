@@ -5,37 +5,34 @@ import java.net.MulticastSocket;
 import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Sender extends Thread{
+public class Receiver extends Thread{
     InetAddress group;
     int port;
     MulticastSocket socket;
     ConcurrentHashMap<SocketAddress, boolean> addressMap;
-    DatagramPacket datagramPacket;
-    String message = "Hi there!";
 
-    public Sender(InetAddress group, int port, ConcurrentHashMap<SocketAddress, boolean> addressMap) throws IOException {
+    public Receiver(InetAddress group, int port, ConcurrentHashMap<SocketAddress, boolean> addressMap) throws IOException {
         this.group = group;
         this.port = port;
         this.addressMap = addressMap;
 
         socket = new MulticastSocket(port);
-        datagramPacket = new DatagramPacket(message.getBytes(), message.length(), group, port);
+        socket.joinGroup(group);
     }
 
     @Override
     public void run(){
         while(!Thread.currentThread().isInterrupted()){
-            try{
-                socket.send(datagramPacket);
+            byte[] buf = new byte[256];
+            DatagramPacket datagramPacket = new DatagramPacket(buf, buf.length);
+
+            try {
+                socket.receive(datagramPacket);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //попробовать без слипа
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            addressMap.put(datagramPacket.getSocketAddress(), true);
         }
+
     }
 }
