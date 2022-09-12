@@ -6,16 +6,16 @@ public class Receiver extends Thread{
     InetAddress group;
     int port;
     MulticastSocket socket;
-    ConcurrentHashMap<SocketAddress, Boolean> addressMap;
+    ConcurrentHashMap<Long, Boolean> addressMap;
 
-    public Receiver(InetAddress group, int port, ConcurrentHashMap<SocketAddress, Boolean> addressMap) throws IOException {
+    public Receiver(InetAddress group, int port, ConcurrentHashMap<Long, Boolean> addressMap) throws IOException {
         this.group = group;
         this.port = port;
         this.addressMap = addressMap;
 
         socket = new MulticastSocket(port);
-        socket.joinGroup(group);
-        //socket.joinGroup(new InetSocketAddress(group, port), NetworkInterface.getByInetAddress(group));
+        //socket.joinGroup(group);
+        socket.joinGroup(new InetSocketAddress(group, port), NetworkInterface.getByInetAddress(group));
     }
 
     @Override
@@ -27,8 +27,10 @@ public class Receiver extends Thread{
             try {
                 socket.receive(datagramPacket);
                 String receivedData = new String(datagramPacket.getData());
-                System.out.println("Received: " + receivedData);
-                addressMap.put(datagramPacket.getSocketAddress(), true);
+//                System.out.println("Received: " + receivedData);
+                Long check = Long.parseLong(receivedData.substring(0, receivedData.indexOf(".")));
+                System.out.print("PID: " + check + ", ");
+                addressMap.put(check, true);
                 System.out.println("Socket address: " + datagramPacket.getSocketAddress());
             } catch (IOException e) {
                 e.printStackTrace();

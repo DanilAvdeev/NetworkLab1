@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -9,16 +11,20 @@ public class Sender extends Thread{
     InetAddress group;
     int port;
     MulticastSocket socket;
-    ConcurrentHashMap<SocketAddress, Boolean> addressMap;
+    ConcurrentHashMap<Long, Boolean> addressMap;
     DatagramPacket datagramPacket;
-    String message = "Hi";
+    String message;
 
-    public Sender(InetAddress group, int port, ConcurrentHashMap<SocketAddress, Boolean> addressMap) throws IOException {
+    public Sender(InetAddress group, int port, ConcurrentHashMap<Long, Boolean> addressMap) throws IOException {
         this.group = group;
         this.port = port;
         this.addressMap = addressMap;
 
         socket = new MulticastSocket();
+        RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();
+        String name = runtime.getName(); // format: "pid@hostname"
+        int PID = Integer.parseInt(name.substring(0, name.indexOf('@')));
+        message = PID + ".";
         datagramPacket = new DatagramPacket(message.getBytes(), message.length(), group, port);
     }
 
