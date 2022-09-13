@@ -4,18 +4,18 @@ import java.lang.management.RuntimeMXBean;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Sender extends Thread{
     InetAddress group;
     int port;
     MulticastSocket socket;
-    ConcurrentHashMap<Long, Boolean> addressMap;
+    ConcurrentHashMap<Long, Long> addressMap;
     DatagramPacket datagramPacket;
     String message;
+    Long PID;
 
-    public Sender(InetAddress group, int port, ConcurrentHashMap<Long, Boolean> addressMap) throws IOException {
+    public Sender(InetAddress group, int port, ConcurrentHashMap<Long, Long> addressMap) throws IOException {
         this.group = group;
         this.port = port;
         this.addressMap = addressMap;
@@ -23,7 +23,7 @@ public class Sender extends Thread{
         socket = new MulticastSocket();
         RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();
         String name = runtime.getName(); // format: "pid@hostname"
-        int PID = Integer.parseInt(name.substring(0, name.indexOf('@')));
+        PID = Long.parseLong(name.substring(0, name.indexOf('@')));
         message = PID + ".";
         datagramPacket = new DatagramPacket(message.getBytes(), message.length(), group, port);
     }
