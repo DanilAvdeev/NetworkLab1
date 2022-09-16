@@ -14,7 +14,9 @@ public class Receiver extends Thread{
         this.addressMap = addressMap;
 
         socket = new MulticastSocket(port);
-        //socket.joinGroup(group);
+//        socket.joinGroup(group);
+//        socket.setInterface(InetAddress.getByName("192.168.1.68"));
+//        socket.setNetworkInterface(NetworkInterface.getByName("192.168.137.1"));
         socket.joinGroup(new InetSocketAddress(group, port), NetworkInterface.getByInetAddress(group));
     }
 
@@ -36,6 +38,5 @@ public class Receiver extends Thread{
                 e.printStackTrace();
             }
         }
-
     }
 }

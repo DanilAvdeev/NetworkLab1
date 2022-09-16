@@ -1,9 +1,7 @@
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
+import java.net.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Sender extends Thread{
@@ -20,7 +18,10 @@ public class Sender extends Thread{
         this.port = port;
         this.addressMap = addressMap;
 
-        socket = new MulticastSocket();
+        socket = new MulticastSocket(port);
+        //socket.setInterface(InetAddress.getByName("localhost"));  //
+        socket.joinGroup(new InetSocketAddress(group, port), NetworkInterface.getByInetAddress(group)); //
+        //socket.joinGroup(group);
         RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();
         String name = runtime.getName(); // format: "pid@hostname"
         PID = Long.parseLong(name.substring(0, name.indexOf('@')));
