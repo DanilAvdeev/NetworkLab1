@@ -1,10 +1,11 @@
+import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TableChecker extends Thread{
-        ConcurrentHashMap<Long, Long> addressMap;
+        ConcurrentHashMap<SocketAddress, Long> addressMap;
 
 
-        public TableChecker(ConcurrentHashMap<Long, Long> addressMap) {
+        public TableChecker(ConcurrentHashMap<SocketAddress, Long> addressMap) {
             this.addressMap = addressMap;
         }
 
@@ -12,7 +13,7 @@ public class TableChecker extends Thread{
         public void run (){
             boolean printCheck = false;
             while(!Thread.currentThread().isInterrupted()){
-                for(ConcurrentHashMap.Entry<Long, Long> set : addressMap.entrySet()){
+                for(ConcurrentHashMap.Entry<SocketAddress, Long> set : addressMap.entrySet()){
                     if (System.currentTimeMillis() - set.getValue() > 3000) {
                         printCheck = true;
                         addressMap.remove(set.getKey());
@@ -27,7 +28,7 @@ public class TableChecker extends Thread{
 
         public void print_map(){
             System.out.println("Working addresses: ");
-            for (ConcurrentHashMap.Entry<Long, Long> set : addressMap.entrySet()){
+            for (ConcurrentHashMap.Entry<SocketAddress, Long> set : addressMap.entrySet()){
                 // Printing all elements of a Map
                 System.out.println("Socket address: " + set.getKey());
             }

@@ -8,17 +8,17 @@ public class Sender extends Thread{
     InetAddress group;
     int port;
     MulticastSocket socket;
-    ConcurrentHashMap<Long, Long> addressMap;
+    ConcurrentHashMap<SocketAddress, Long> addressMap;
     DatagramPacket datagramPacket;
     String message;
     Long PID;
 
-    public Sender(InetAddress group, int port, ConcurrentHashMap<Long, Long> addressMap) throws IOException {
+    public Sender(InetAddress group, int port, ConcurrentHashMap<SocketAddress, Long> addressMap) throws IOException {
         this.group = group;
         this.port = port;
         this.addressMap = addressMap;
 
-        socket = new MulticastSocket(port);
+        socket = new MulticastSocket();
         //socket.setInterface(InetAddress.getByName("localhost"));  //
         socket.joinGroup(new InetSocketAddress(group, port), NetworkInterface.getByInetAddress(group)); //
         //socket.joinGroup(group);

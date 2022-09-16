@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
@@ -7,7 +8,7 @@ public class Main {
         String ip = args[0];
         int port = Integer.parseInt(args[1]);
         InetAddress group;
-        ConcurrentHashMap<Long, Long> addressMap = new ConcurrentHashMap<>();
+        ConcurrentHashMap<SocketAddress, Long> addressMap = new ConcurrentHashMap<>();
 
         try {
             group = InetAddress.getByName(ip);
